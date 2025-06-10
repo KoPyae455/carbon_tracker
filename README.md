@@ -7,20 +7,6 @@ This is the **backend module** for a Carbon Emission Tracking System. It uses:
 - ✅ Smart rule-based advice engine
 - ✅ JSON input/output for frontend integration
 
----
-
-## 📁 Folder Structure
-
-carbon_backend/
-├── co2_engine.py # Emission, clustering, advice logic
-├── train_kmeans.py # Train clustering model (one-time)
-├── model.pkl # Saved KMeans model
-├── run_prediction.py # Runs full pipeline on input
-├── user_input.json # Input (from frontend)
-├── output.json # Output (for frontend)
-├── data.json # Optional: logs all users
-├── README.md
-
 
 ---
 
