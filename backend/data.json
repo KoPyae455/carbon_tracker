@@ -8,5 +8,205 @@
     "plastic_kg": 1.0,
     "total": 73.0,
     "cluster": 2
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.5,
+    "electricity_kwh": 18.0,
+    "vehicle_type": "electric",
+    "distance_km": 20.0,
+    "plastic_kg": 0.5,
+    "total": 20.05,
+    "cluster": 2
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "train",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 27.98,
+    "cluster": 2
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "train",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 27.98,
+    "cluster": 2
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "train",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 27.98,
+    "cluster": 2
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "train",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 27.98,
+    "cluster": 2
+  },
+  {
+    "meal_type": "vegetables",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 24.2,
+    "cluster": 2
+  },
+  {
+    "meal_type": "vegetables",
+    "meal_kg": 0.2,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 3.3,
+    "total": 26.2,
+    "cluster": 2
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 0.2,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 0.0,
+    "total": 14.88,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 3.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 0.0,
+    "total": 94.5,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 3.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 0.0,
+    "total": 94.5,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 3.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 0.0,
+    "total": 94.5,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 300.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 0.0,
+    "total": 8113.5,
+    "cluster": 1
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 300.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "bus",
+    "distance_km": 100.0,
+    "plastic_kg": 10.0,
+    "total": 8173.5,
+    "cluster": 1
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 300.0,
+    "electricity_kwh": 7.0,
+    "vehicle_type": "diesel",
+    "distance_km": 100.0,
+    "plastic_kg": 10.0,
+    "total": 8193.5,
+    "cluster": 1
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 300.0,
+    "electricity_kwh": 7000.0,
+    "vehicle_type": "diesel",
+    "distance_km": 100.0,
+    "plastic_kg": 10.0,
+    "total": 11690.0,
+    "cluster": 1
+  },
+  {
+    "meal_type": "chicken",
+    "meal_kg": 1.2,
+    "electricity_kwh": 3.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 14.08,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 1300.0,
+    "electricity_kwh": 3.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 35105.8,
+    "cluster": 1
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 1.0,
+    "electricity_kwh": 3.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 10.0,
+    "total": 91.0,
+    "cluster": 2
+  },
+  {
+    "meal_type": "beef",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 0.3,
+    "total": 54.2,
+    "cluster": 2
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 4.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 1000.0,
+    "plastic_kg": 0.3,
+    "total": 280.64,
+    "cluster": 2
   }
 ]

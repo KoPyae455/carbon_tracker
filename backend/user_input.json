@@ -1,8 +1,1 @@
-{
-  "meal_type": "beef",
-  "meal_kg": 2,
-  "electricity_kwh": 20,
-  "vehicle_type": "bus",
-  "distance_km": 30,
-  "plastic_kg": 1
-}
+{"meal_type": "rice", "meal_kg": 4.2, "electricity_kwh": 35, "vehicle_type": "petrol", "distance_km": 1000, "plastic_kg": 0.3}

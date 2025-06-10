@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 import joblib
 
+
 # ----------------------------
 # 1. Sample Training Data
 # ----------------------------
