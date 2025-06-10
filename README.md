@@ -24,11 +24,48 @@ carbon_backend/
 
 ---
 
-## 🧠 How It Works
+## ⚙️ How It Works
 
-### 1. Input (user_input.json)
+### 1. User enters daily data in a form (HTML UI)
 
-```json
+- Meal type + weight
+- Electricity usage
+- Vehicle type + distance
+- Plastic usage
+
+### 2. JavaScript sends input to Flask API (`/predict`)
+### 3. Python backend:
+- Calculates total CO₂
+- Predicts cluster via KMeans
+- Generates AI-style advice
+- Returns a complete JSON result
+
+### 4. Frontend receives result and displays it instantly.
+
+---
+
+## 🚀 Run the Project
+
+### Step 1: Install Python requirements
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 2: Train the KMeans model (if not already trained)
+```
+cd backend
+python train_kmeans.py
+```
+### Step 3: Start Flask backend
+```
+python app.py
+```
+
+### Step 4: Open frontend/index.html in your browser
+➡ Fill the form and click Submit
+➡ Result will appear instantly with advice and stats
+``` json
 {
   "meal_type": "beef",
   "meal_kg": 2,
@@ -37,12 +74,12 @@ carbon_backend/
   "distance_km": 30,
   "plastic_kg": 1
 }
-
-2. Backend will:
-Calculate CO₂ emissions using multipliers
-
-Predict user's cluster group using KMeans
-
-Give personalized rule-based advice
-
-Save everything to output.json
+```
+### Example Output
+``` json
+{
+  "total": 421.0,
+  "cluster": 2,
+  "advice": "🥩 Try reducing beef.\n🔌 Turn off unused devices.\n🚌 Use public transport.\n🧴 Reuse plastic containers."
+}
+```
