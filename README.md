@@ -52,7 +52,7 @@ python app.py
 
 ### Step 4: Open frontend/index.html in your browser
 ➡ Fill the form and click Submit
-➡ Result will appear instantly with advice and stats
+➡ Result will appear instantly with advice, cluster number and range
 ``` json
 {
   "meal_type": "beef",
@@ -68,6 +68,7 @@ python app.py
 {
   "total": 421.0,
   "cluster": 2,
+  "range": "50-200kg",
   "advice": "🥩 Try reducing beef.\n🔌 Turn off unused devices.\n🚌 Use public transport.\n🧴 Reuse plastic containers."
 }
 ```
