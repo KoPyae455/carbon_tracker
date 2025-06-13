@@ -19,8 +19,8 @@ def main():
 
         # Process
         total, vector = calculate_emission(raw)
-        model = load_model()
-        cluster = predict_cluster(model, vector)
+        model, scaler = load_model()
+        cluster = predict_cluster(model, scaler, vector)
 
         emissions_dict = {
             'meal': vector[0],

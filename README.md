@@ -39,6 +39,8 @@ pip install -r requirements.txt
 ```
 
 ### Step 2: Train the KMeans model (if not already trained)
+This script parses `backend/data.json` to build a training set, scales the
+features with `StandardScaler` and saves both `model.pkl` and `scaler.pkl`.
 ```
 cd backend
 python train_kmeans.py

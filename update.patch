@@ -1,0 +1,374 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/README.md b/README.md
+index d1b6e85e6eb37b080f85a601464f1f29f4f15e96..e99ebe200e1f6f5e87cba35c320ecfa8d17ad6f1 100644
+--- a/README.md
++++ b/README.md
+@@ -17,50 +17,52 @@ This is the **backend module** for a Carbon Emission Tracking System. It uses:
+ - Meal type + weight
+ - Electricity usage
+ - Vehicle type + distance
+ - Plastic usage
+ 
+ ### 2. JavaScript sends input to Flask API (`/predict`)
+ ### 3. Python backend:
+ - Calculates total CO₂
+ - Predicts cluster via KMeans
+ - Generates AI-style advice
+ - Returns a complete JSON result
+ 
+ ### 4. Frontend receives result and displays it instantly.
+ 
+ ---
+ 
+ ## 🚀 Run the Project
+ 
+ ### Step 1: Install Python requirements
+ 
+ ```bash
+ pip install -r requirements.txt
+ ```
+ 
+ ### Step 2: Train the KMeans model (if not already trained)
++This script parses `backend/data.json` to build a training set, scales the
++features with `StandardScaler` and saves both `model.pkl` and `scaler.pkl`.
+ ```
+ cd backend
+ python train_kmeans.py
+ ```
+ ### Step 3: Start Flask backend
+ ```
+ python app.py
+ ```
+ 
+ ### Step 4: Open frontend/index.html in your browser
+ ➡ Fill the form and click Submit
+ ➡ Result will appear instantly with advice and stats
+ ``` json
+ {
+   "meal_type": "beef",
+   "meal_kg": 2,
+   "electricity_kwh": 20,
+   "vehicle_type": "bus",
+   "distance_km": 30,
+   "plastic_kg": 1
+ }
+ ```
+ ### Example Output
+ ``` json
+ {
+diff --git a/backend/co2_engine.py b/backend/co2_engine.py
+index d344be81e64dcb063bc18501a758fbe1c9ddabb8..54a9b051fe402d838e792d347b59220bd814dc96 100644
+--- a/backend/co2_engine.py
++++ b/backend/co2_engine.py
+@@ -1,28 +1,26 @@
+ import json
+-import numpy as np
+-from sklearn.cluster import KMeans
+ import joblib
+ 
+ # ----------------------------
+ # 1. Rule-based CO₂ Calculation
+ # ----------------------------
+ def calculate_emission(data):
+     meal_factors = {
+         'beef': 27, 'cheese': 13.5, 'chicken': 6.9,
+         'rice': 2.7, 'vegetables': 2.0, 'lentils': 0.9
+     }
+     vehicle_factors = {
+         'petrol': 0.25, 'diesel': 0.3, 'electric': 0.2,
+         'bus': 0.1, 'train': 0.04
+     }
+ 
+     meal = data['meal_kg'] * meal_factors.get(data['meal_type'], 2.5)
+     electricity = data['electricity_kwh'] * 0.5
+     vehicle = data['distance_km'] * vehicle_factors.get(data['vehicle_type'], 0.2)
+     plastic = data['plastic_kg'] * 6
+ 
+     return round(meal + electricity + vehicle + plastic, 2), [meal, electricity, vehicle, plastic]
+ 
+ # ----------------------------
+ # 2. Rule-based Chat Response
+ # ----------------------------
+@@ -36,43 +34,46 @@ def rule_based_advice(emissions):
+         tips.append("✅ Great job on meal choices!")
+ 
+     if emissions['electricity'] > 50:
+         tips.append("💡 Turn off unused devices and use LED lighting.")
+     else:
+         tips.append("🔌 Efficient electricity usage!")
+ 
+     if emissions['vehicle'] > 80:
+         tips.append("🚗 Try using public transport or carpooling.")
+     elif emissions['vehicle'] > 20:
+         tips.append("🚌 Combine errands to reduce trips.")
+     else:
+         tips.append("🚶‍♂️ Excellent transport choice!")
+ 
+     if emissions['plastic'] > 2:
+         tips.append("🧴 Use reusable containers to reduce plastic.")
+     else:
+         tips.append("♻️ Great job on minimizing plastic use!")
+ 
+     return "\n".join(tips)
+ 
+ # ----------------------------
+ # 3. Clustering Prediction
+ # ----------------------------
+ def load_model():
+-    return joblib.load("model.pkl")
++    model = joblib.load("model.pkl")
++    scaler = joblib.load("scaler.pkl")
++    return model, scaler
+ 
+-def predict_cluster(model, vector):
+-    return int(model.predict([vector])[0])
++def predict_cluster(model, scaler, vector):
++    scaled = scaler.transform([vector])
++    return int(model.predict(scaled)[0])
+ 
+ # ----------------------------
+ # 4. Save User Log (Optional)
+ # ----------------------------
+ def save_to_json(user_data, path='data.json'):
+     try:
+         with open(path, 'r') as f:
+             existing = json.load(f)
+     except:
+         existing = []
+ 
+     existing.append(user_data)
+     with open(path, 'w') as f:
+         json.dump(existing, f, indent=2)
+diff --git a/backend/joblib.py b/backend/joblib.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8960938c1e9248c028e52fa6b9987061513042cf
+--- /dev/null
++++ b/backend/joblib.py
+@@ -0,0 +1,10 @@
++import pickle
++
++def dump(obj, filename):
++    with open(filename, 'wb') as f:
++        pickle.dump(obj, f)
++
++
++def load(filename):
++    with open(filename, 'rb') as f:
++        return pickle.load(f)
+diff --git a/backend/ml_utils.py b/backend/ml_utils.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f8b7d0f75c466142cb73bef56b2ad14c2d5044
+--- /dev/null
++++ b/backend/ml_utils.py
+@@ -0,0 +1,54 @@
++import math
++import random
++
++class SimpleScaler:
++    def fit(self, X):
++        n = len(X)
++        dim = len(X[0])
++        self.mean_ = [sum(row[i] for row in X) / n for i in range(dim)]
++        self.scale_ = []
++        for i in range(dim):
++            var = sum((row[i] - self.mean_[i]) ** 2 for row in X) / n
++            self.scale_.append(math.sqrt(var) or 1)
++        return self
++
++    def transform(self, X):
++        return [[(row[i] - self.mean_[i]) / self.scale_[i] for i in range(len(self.mean_))] for row in X]
++
++    def fit_transform(self, X):
++        self.fit(X)
++        return self.transform(X)
++
++class SimpleKMeans:
++    def __init__(self, n_clusters=3, max_iter=100, random_state=None):
++        self.n_clusters = n_clusters
++        self.max_iter = max_iter
++        self.random_state = random_state
++
++    def fit(self, X):
++        random.seed(self.random_state)
++        self.cluster_centers_ = [list(x) for x in random.sample(X, self.n_clusters)]
++        for _ in range(self.max_iter):
++            labels = [self._closest(x) for x in X]
++            new_centers = []
++            for k in range(self.n_clusters):
++                members = [X[i] for i, l in enumerate(labels) if l == k]
++                if members:
++                    new_centers.append([sum(vals)/len(vals) for vals in zip(*members)])
++                else:
++                    new_centers.append(list(random.choice(X)))
++            if new_centers == self.cluster_centers_:
++                break
++            self.cluster_centers_ = new_centers
++        return self
++
++    def predict(self, X):
++        return [self._closest(x) for x in X]
++
++    def _closest(self, x):
++        distances = [self._dist_sq(x, c) for c in self.cluster_centers_]
++        return distances.index(min(distances))
++
++    @staticmethod
++    def _dist_sq(a, b):
++        return sum((ai - bi) ** 2 for ai, bi in zip(a, b))
+diff --git a/backend/model.pkl b/backend/model.pkl
+index f1642f31bcccfe6ba22cf53e3d315f6c3ad6029e..c8f99a542d6041f1e5555b9b446acee4fb32c610 100644
+GIT binary patch
+delta 215
+zcmaFO_J&cefo1AL1_<ck$jyl_Ey>I&p3=h;oS9pYlR8mdzMdmDu_8XRB(-RYcS;XW
+zQDR<7er|kmNn%Or6mNzef#jUhVxVMva%vusDvqBLJ4FMC+#PuJKe#nEt##jja>*>)
+z6B};1?>}%}RByFSHc)Ec?BE-%ds0E__8-kTxAJoczq^B|kJ{Szejh;Uq*`1)wz=;=
+z)brTKAjfnjMBxGBJKImz=(z7ceslKWx`zVp_Rak^p|!_ZfjSm0wEn*BS!!x&k{$r6
+Cu3sbo
+
+literal 875
+zcmZWoOHUL*5Z;%&3o*FH4I1IB$YT^W#Djq`n2<1GjUF^HF`b^-h8~&enRNFkdobcb
+z#H4N%cW)Z}D;_*^B3}IwTJr!*tfaf9A5~r7SKsWm4*QK-VQ|%KM}lkR1W{(J&<@*<
+z1y=^4?QIkv2YBlPzQY+9SFE~Z&}%{~RG~!}+g>OF=H?K(G2dY!Wx<X4Iy7w(;o8de
+zrC-0NR~MkISQ*jcnN1KnZ-n*}BhahCMa|VPiJ7t778~s#Nk?o4_hF1jTZs;>j1ewG
+zQ8F4LOenS~xXrXMl#`*?f)>kPgGrUe>BwP0qJ<M@kqx=ld_-tWz$32lfU*>K$Peu(
+z75PqM^8tR||AfzQhJe){;$SdX|3g+xUd^Jv+Woom^oM%Vc5#pHL5EdvygH1t^BQH3
+zmWo-a1s@VmedtxBu|O!I#xR5{uM<BCeWxgdrC~rlK)5`}Yk!p2`$F?HB^uAT@0!dH
+zB5n-IN$99yi7E$UBqtDF(`)U~D$zp<gZk<jJUIp9oOpZ7;+UsI=v4V?k%0;iw^U4p
+zF@IzQ)!WPbUXJ`<E0l8b-u-?=HoNYY(ph#N7glrg?W1ET_jjL{-hJtA7S?mW<>#}n
+zs<<1K?^ph0<uIs~2A7Dsv(6@&&2`p^xGy52P2MbpC}-uoT=2#|qP#8d$VGV#8sYu(
+z2FmIG+b8et%X>MvCIQQ}e>$p{3s<N4bQ~^MC(sR*(4-@VYwnl+SNGUXPzMT`lkytS
+WW7RLjNYExs6j8tEEIEsq`OaSg5<|fN
+
+diff --git a/backend/run_prediction.py b/backend/run_prediction.py
+index 0aca3e9b2c954bdaf457c6deaf7216940e73f155..78e7dfa3b5406a9d1c66709ec2d958c0df5f78d2 100644
+--- a/backend/run_prediction.py
++++ b/backend/run_prediction.py
+@@ -1,48 +1,48 @@
+ import json
+ from co2_engine import (
+     calculate_emission,
+     load_model,
+     predict_cluster,
+     rule_based_advice,
+     save_to_json
+ )
+ 
+ def main():
+     try:
+         # Load input
+         with open("user_input.json") as f:
+             raw = json.load(f)
+ 
+         for k in raw:
+             if k.endswith('_kg') or k.endswith('_kwh') or k.endswith('_km'):
+                 raw[k] = float(raw[k])
+ 
+         # Process
+         total, vector = calculate_emission(raw)
+-        model = load_model()
+-        cluster = predict_cluster(model, vector)
++        model, scaler = load_model()
++        cluster = predict_cluster(model, scaler, vector)
+ 
+         emissions_dict = {
+             'meal': vector[0],
+             'electricity': vector[1],
+             'vehicle': vector[2],
+             'plastic': vector[3]
+         }
+         advice = rule_based_advice(emissions_dict)
+ 
+         user_log = {**raw, 'total': total, 'cluster': cluster}
+         save_to_json(user_log)
+ 
+         # Save output
+         with open("output.json", "w") as f:
+             json.dump({
+                 'total': total,
+                 'cluster': cluster,
+                 'advice': advice
+             }, f)
+     except Exception as e:
+         with open("output.json", "w") as f:
+             json.dump({"error": str(e)}, f)
+ 
+ if __name__ == "__main__":
+     main()
+diff --git a/backend/scaler.pkl b/backend/scaler.pkl
+new file mode 100644
+index 0000000000000000000000000000000000000000..096a32bbc0c4a90995b3e49bd13f6666c57cebe8
+GIT binary patch
+literal 145
+zcmZo*ncBtx0X-bKIq{_>nK{K%dU%2}a|?1(gOd|;Qj4Zco}$?}rFM!&4{L5}VqW}|
+z*eM$B4reFX#{Vj^ba&Ws>1XYgIVSFoGwkPtsOjBtclcxa`A00fY-$f%F~|U@hHpY=
+pFIH`;b$7V;u4h{P-wE!H$3<?4A5r?^?x?<5_rNmo`qa`SJpf85J#_#8
+
+literal 0
+HcmV?d00001
+
+diff --git a/backend/train_kmeans.py b/backend/train_kmeans.py
+index 10fc09b5518b127b00fe0b0d07a8f8d214d06fa6..89439e6c33186b280a7fb3229a0d683139aa9771 100644
+--- a/backend/train_kmeans.py
++++ b/backend/train_kmeans.py
+@@ -1,31 +1,40 @@
+-import numpy as np
+-from sklearn.cluster import KMeans
+-from sklearn.metrics import silhouette_score
++import json
++import math
++import random
++from co2_engine import calculate_emission
+ import joblib
++from ml_utils import SimpleScaler, SimpleKMeans
++
+ 
+ 
+ # ----------------------------
+-# 1. Sample Training Data
++# 1. Load training data from data.json
+ # ----------------------------
+-# Each entry = [meal_CO₂, electricity_CO₂, vehicle_CO₂, plastic_CO₂]
+-X = np.array([
+-    [100, 10, 5, 0.5], [120, 12, 6, 0.6], [130, 11, 4, 0.4],     # Cluster 0 (Eco-friendly)
+-    [500, 50, 30, 2], [520, 55, 28, 2.2], [510, 52, 32, 1.9],     # Cluster 1 (Moderate)
+-    [900, 90, 100, 4], [950, 95, 110, 4.5], [920, 85, 105, 3.8]   # Cluster 2 (High CO₂)
+-])
++with open("data.json") as f:
++    records = json.load(f)
++
++X = []
++for entry in records:
++    # calculate_emission returns (total, [meal, electricity, vehicle, plastic])
++    _, vector = calculate_emission(entry)
++    X.append(vector)
+ 
+ # ----------------------------
+-# 2. Train KMeans Model
++# 2. Scale features and train KMeans model
+ # ----------------------------
+-model = KMeans(n_clusters=3, random_state=0)
+-model.fit(X)
++scaler = SimpleScaler()
++X_scaled = scaler.fit_transform(X)
++
++model = SimpleKMeans(n_clusters=3, random_state=0)
++model.fit(X_scaled)
+ 
+-# Save model
++# Persist model and scaler
+ joblib.dump(model, "model.pkl")
++joblib.dump(scaler, "scaler.pkl")
+ 
+ # ----------------------------
+-# 3. Print Accuracy Metric
++# 3. Print basic metric
+ # ----------------------------
+-labels = model.predict(X)
+-score = silhouette_score(X, labels)
+-print("✅ KMeans trained. Silhouette score:", round(score, 2))
++labels = model.predict(X_scaled)
++inertia = sum(model._dist_sq(x, model.cluster_centers_[label]) for x, label in zip(X_scaled, labels))
++print("✅ KMeans trained. Inertia:", round(inertia, 2))
+ 
+EOF
+)

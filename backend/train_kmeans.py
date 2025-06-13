@@ -1,31 +1,40 @@
-import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
+import json
+import math
+import random
+from co2_engine import calculate_emission
 import joblib
+from ml_utils import SimpleScaler, SimpleKMeans
 
 
-# ----------------------------
-# 1. Sample Training Data
-# ----------------------------
-# Each entry = [meal_CO₂, electricity_CO₂, vehicle_CO₂, plastic_CO₂]
-X = np.array([
-    [100, 10, 5, 0.5], [120, 12, 6, 0.6], [130, 11, 4, 0.4],     # Cluster 0 (Eco-friendly)
-    [500, 50, 30, 2], [520, 55, 28, 2.2], [510, 52, 32, 1.9],     # Cluster 1 (Moderate)
-    [900, 90, 100, 4], [950, 95, 110, 4.5], [920, 85, 105, 3.8]   # Cluster 2 (High CO₂)
-])
 
 # ----------------------------
-# 2. Train KMeans Model
+# 1. Load training data from data.json
 # ----------------------------
-model = KMeans(n_clusters=3, random_state=0)
-model.fit(X)
+with open("data.json") as f:
+    records = json.load(f)
 
-# Save model
+X = []
+for entry in records:
+    # calculate_emission returns (total, [meal, electricity, vehicle, plastic])
+    _, vector = calculate_emission(entry)
+    X.append(vector)
+
+# ----------------------------
+# 2. Scale features and train KMeans model
+# ----------------------------
+scaler = SimpleScaler()
+X_scaled = scaler.fit_transform(X)
+
+model = SimpleKMeans(n_clusters=3, random_state=0)
+model.fit(X_scaled)
+
+# Persist model and scaler
 joblib.dump(model, "model.pkl")
+joblib.dump(scaler, "scaler.pkl")
 
 # ----------------------------
-# 3. Print Accuracy Metric
+# 3. Print basic metric
 # ----------------------------
-labels = model.predict(X)
-score = silhouette_score(X, labels)
-print("✅ KMeans trained. Silhouette score:", round(score, 2))
+labels = model.predict(X_scaled)
+inertia = sum(model._dist_sq(x, model.cluster_centers_[label]) for x, label in zip(X_scaled, labels))
+print("✅ KMeans trained. Inertia:", round(inertia, 2))

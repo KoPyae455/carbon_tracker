@@ -1,6 +1,4 @@
 import json
-import numpy as np
-from sklearn.cluster import KMeans
 import joblib
 
 # ----------------------------
@@ -58,10 +56,13 @@ def rule_based_advice(emissions):
 # 3. Clustering Prediction
 # ----------------------------
 def load_model():
-    return joblib.load("model.pkl")
+    model = joblib.load("model.pkl")
+    scaler = joblib.load("scaler.pkl")
+    return model, scaler
 
-def predict_cluster(model, vector):
-    return int(model.predict([vector])[0])
+def predict_cluster(model, scaler, vector):
+    scaled = scaler.transform([vector])
+    return int(model.predict(scaled)[0])
 
 # ----------------------------
 # 4. Save User Log (Optional)
