@@ -85,7 +85,7 @@
         const result = await res.json();
 
         const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = `<strong>Total CO₂:</strong> ${result.total} kg<br><strong>Cluster Group:</strong> ${result.cluster}<br><strong>Suggestions:</strong> ${result.advice}`;
+        resultDiv.innerHTML = `<strong>Total CO₂:</strong> ${result.total} kg<br><strong>Cluster Group:</strong> ${result.cluster} (${result.range})<br><strong>Suggestions:</strong> ${result.advice}`;
         resultDiv.classList.remove('d-none');
     });
 </script>
