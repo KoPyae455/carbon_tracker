@@ -313,5 +313,83 @@
     "cluster_ml_label": "Too much CO\u2082",
     "cluster_rule": 1,
     "cluster_rule_label": "Moderate CO\u2082"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 1.0,
+    "total": 29.24,
+    "cluster_ml": 0,
+    "cluster_ml_label": "Eco-friendly",
+    "cluster_rule": 0,
+    "cluster_rule_label": "Eco-friendly"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 10.0,
+    "plastic_kg": 1.0,
+    "total": 29.24,
+    "cluster_ml": 0,
+    "cluster_ml_label": "Eco-friendly",
+    "cluster_rule": 0,
+    "cluster_rule_label": "Eco-friendly"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 1000.0,
+    "plastic_kg": 1.0,
+    "total": 276.74,
+    "cluster_ml": 2,
+    "cluster_ml_label": "Too much CO\u2082",
+    "cluster_rule": 2,
+    "cluster_rule_label": "Too much CO\u2082"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 1.0,
+    "plastic_kg": 1.0,
+    "total": 26.99,
+    "cluster_ml": 0,
+    "cluster_ml_label": "Eco-friendly",
+    "cluster_rule": 0,
+    "cluster_rule_label": "Eco-friendly"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 1.2,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 1.0,
+    "plastic_kg": 0.1,
+    "total": 21.59,
+    "cluster_ml": 0,
+    "cluster_ml_label": "Eco-friendly",
+    "cluster_rule": 0,
+    "cluster_rule_label": "Eco-friendly"
+  },
+  {
+    "meal_type": "rice",
+    "meal_kg": 200.0,
+    "electricity_kwh": 35.0,
+    "vehicle_type": "petrol",
+    "distance_km": 1.0,
+    "plastic_kg": 0.1,
+    "total": 558.35,
+    "cluster_ml": 2,
+    "cluster_ml_label": "Too much CO\u2082",
+    "cluster_rule": 2,
+    "cluster_rule_label": "Too much CO\u2082"
   }
 ]

@@ -1,0 +1,17 @@
+[
+  {"meal_type": "beef",       "meal_kg": 0.3, "electricity_kwh": 20, "vehicle_type": "petrol", "distance_km": 30, "plastic_kg": 1.0},
+  {"meal_type": "chicken",    "meal_kg": 0.5, "electricity_kwh": 12, "vehicle_type": "bus",    "distance_km": 10, "plastic_kg": 0.2},
+  {"meal_type": "lentils",    "meal_kg": 0.8, "electricity_kwh": 7,  "vehicle_type": "electric","distance_km": 8, "plastic_kg": 0.1},
+  {"meal_type": "cheese",     "meal_kg": 0.4, "electricity_kwh": 15, "vehicle_type": "train",   "distance_km": 22, "plastic_kg": 0.5},
+  {"meal_type": "vegetables", "meal_kg": 1.0, "electricity_kwh": 5,  "vehicle_type": "diesel",  "distance_km": 6, "plastic_kg": 0.3},
+  {"meal_type": "rice",       "meal_kg": 1.2, "electricity_kwh": 10, "vehicle_type": "petrol",  "distance_km": 40, "plastic_kg": 0.7},
+  {"meal_type": "beef",       "meal_kg": 1.0, "electricity_kwh": 25, "vehicle_type": "diesel",  "distance_km": 80, "plastic_kg": 2.0},
+  {"meal_type": "cheese",     "meal_kg": 0.7, "electricity_kwh": 8,  "vehicle_type": "bus",     "distance_km": 16, "plastic_kg": 0.4},
+  {"meal_type": "chicken",    "meal_kg": 1.2, "electricity_kwh": 18, "vehicle_type": "train",   "distance_km": 50, "plastic_kg": 1.0},
+  {"meal_type": "lentils",    "meal_kg": 1.5, "electricity_kwh": 5,  "vehicle_type": "electric","distance_km": 2, "plastic_kg": 0.1},
+  {"meal_type": "beef",       "meal_kg": 0.2, "electricity_kwh": 2,  "vehicle_type": "petrol",  "distance_km": 5, "plastic_kg": 0.2},
+  {"meal_type": "vegetables", "meal_kg": 0.8, "electricity_kwh": 3,  "vehicle_type": "bus",     "distance_km": 4, "plastic_kg": 0.1},
+  {"meal_type": "rice",       "meal_kg": 0.6, "electricity_kwh": 7,  "vehicle_type": "train",   "distance_km": 11, "plastic_kg": 0.3},
+  {"meal_type": "beef",       "meal_kg": 1.8, "electricity_kwh": 40, "vehicle_type": "petrol",  "distance_km": 95, "plastic_kg": 4.5},
+  {"meal_type": "chicken",    "meal_kg": 2.0, "electricity_kwh": 22, "vehicle_type": "diesel",  "distance_km": 30, "plastic_kg": 3.0}
+]
